@@ -1,0 +1,4 @@
+1031,Joan,78 Road,(514)456-8765,f,1000,Mathematics,Computer Science,Master,computer,2021-07-21,10.5,PartTime,false,32
+1032,Stephane,178 Road,(514)345-8765,f,1000,Mathematics,math,Bachelor,math,2021-07-21,10.5,PartTime,false,30
+2031,William,56 Road,(514)987-8765,m,2000,Science,Computer Science,Master,computer,2021-07-21,1,PartTime,false,32
+2032,Jenny,178 Road,(514)345-8765,f,2000,Science,chemistry,Bachelor,chemistry,2019-07-21,5,PartTime,false,30

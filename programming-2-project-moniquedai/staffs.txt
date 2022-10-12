@@ -1,0 +1,4 @@
+1013,Steve,135 Road Louis,(514)239-8456,m,1000,Mathematics,administration,35,
+1011,John,15 Ave Sherbrooke,(514)987-3245,m,1000,Mathematics,secretary,40 
+2011,Jenny,367 Avenue College, (514)567-9886,f,2000,Science,adminstration,37.5
+2012,Olive,987 Rue Tait, (514)567-2386,m,2000,Science,accountant,35

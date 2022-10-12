@@ -1,0 +1,6 @@
+1001,Hance,345 Westmount,(514)988-8765,m,1000,Mathematics,math,Phd,math,2000-02-21,30,FullTime,true
+1021,Joe,35 Road,(514)234-8765,m,1000,Mathematics,math,Phd,math,2021-04-21,20.0,FullTime,false
+1022,Max,35 Street,(514)234-0988,m,1000,Mathematics,math,Master,math,2022-04-21,3.5,FullTime,false
+2001,Henry,1345 Westmount,(514)566-8765,m,2000,Science,physics,Phd,physics,2000-01-21,35.0,FullTime,true
+2021,Mike,45 Road,(514)124-8765,m,2000,Science,Computer Science,Phd,computer science,2000-04-21,20.0,FullTime,false
+2022,Nicole,35 Street,(514)234-7658,f,2000,Science,Phycics,Master,physics,2019-04-21,10,FullTime,false

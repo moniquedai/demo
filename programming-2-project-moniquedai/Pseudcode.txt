@@ -1,0 +1,270 @@
+Compute salary for fulltime teacher
+
+	public double ComputePayRoll(){
+		double payroll = 0.0;
+
+		switch(getDegree()) {
+			case("Phd"):
+				payroll=32*ratePhd*2*0.85;
+				break;
+			case("Master"):
+				payroll=32*rateMaster*2*0.85;
+				break;
+			case("Bachelor"):
+				payroll=32*rateBachelor*2*0.85;
+				break;
+		}
+		return payroll;	
+	}
+
+Compute salary for parttime teacher
+
+	public double ComputePayRoll(){
+		double payroll = 0.0;
+		switch(getDegree()) {
+			case("phd"):
+				payroll=workingHour*ratePhd*2*0.76;
+				break;
+			case("Master"):
+				payroll=workingHour*rateMaster*2*0.76;
+				break;
+			case("Bachelor"):
+				payroll=workingHour*rateBachelor*2*0.76;
+				break;
+		}
+		return payroll;
+	}
+
+
+Compute salary for staff
+
+	public double ComputePayRoll(){
+		if (workload>40)
+			return 0;
+		else
+			return (workload*32*2)*0.75;		
+	}
+get the department:
+
+	public static List<Department> getAllDep(){
+		return deplist;
+	}
+
+add department:	
+	public static void addDepartment(Department d) {
+		deplist.add(d);
+	}
+
+add fulltime teacher		
+	public void addFullTimeTeacher(FullTimeTeacher ft) throws TwoInfoTheSameException {
+		final int employeeID = ft.getEmployeeID();
+		Department.getAllDep().forEach(d -> {
+			d.getFullTimeTeachers().forEach(t -> {
+				if (t.getEmployeeID() == employeeID)
+					throw new TwoInfoTheSameException();
+			});
+		});
+		fullTimeTeachers.add(ft);
+	}
+
+add parttime teacher:
+	public void addPartTimeTeacher(PartTimeTeacher pt) throws TwoInfoTheSameException {
+		final int employeeID = pt.getEmployeeID();
+		Department.getAllDep().forEach(d -> {
+			d.getPartTimeTeachers().forEach(t -> {
+				if (t.getEmployeeID() == employeeID)
+					throw new TwoInfoTheSameException();
+			});
+		});
+
+		partTimeTeachers.add(pt);
+	}
+
+add staff:
+	public void addStaff(Staff staff) throws TwoInfoTheSameException {
+		final int employeeID = staff.getEmployeeID();
+		Department.getAllDep().forEach(d -> {
+			d.getStaffs().forEach(t -> {
+				if (t.getEmployeeID() == employeeID)
+					throw new TwoInfoTheSameException();
+			});
+		});
+		staffs.add(staff);
+	}
+
+
+read department information and throw the exception:
+
+	public static void readDepartmentFile(String path) throws RepeatedDepartmentException,InexistentDepartmentException {
+		File file = new File(path);
+		try (Scanner input = new Scanner(file)) {
+
+			while (input.hasNext()) {
+				String row = input.nextLine();
+				int departmentID = Integer.parseInt(row);
+				Department dp = new Department();
+				dp.setDepartmentID(departmentID);
+
+				List<Department> ld = getAllDep();
+				int i;
+				for (i = 0; i < ld.size(); i++) {
+					if (departmentID == ld.get(i).getDepartmentID()) {
+						throw new RepeatedDepartmentException();
+					}
+				}
+				ld.add(dp);
+			}
+			input.close();
+		} catch (IOException e) {
+			System.out.println(String.format("File %s does not exist", path));
+		}
+	}
+
+
+read staff information and throw the exception:
+
+	public static void readStaffsFile(String path) throws TwoInfoTheSameException, InexistentDepartmentException{
+	 	File file=new File(path);
+		try(Scanner input=new Scanner(file)){
+			
+			while(input.hasNext()) {
+				String row=input.nextLine();
+				String[] data = row.split(",");
+				Integer employeeID=Integer.parseInt(data[0]);
+				String name=data[1]; 
+				String address=data[2];
+				String phoneNum=data[3];
+				char gender=data[4].charAt(0);
+				Integer departmentID=-1;
+				try {
+					departmentID=Integer.parseInt(data[5]);
+				}catch(java.lang.NumberFormatException e) {
+				}
+				String department=data[6];
+				String duty=data[7];
+				double workload=Double.parseDouble(data[8]);
+				Staff staff=new Staff(employeeID,name,address,phoneNum,gender,departmentID,department,duty,workload);
+				
+				List<Department> ld=getAllDep();
+				Department dp;
+				int i;
+				for (i=0;i<ld.size();i++) {
+					if(departmentID==ld.get(i).getDepartmentID())
+						{
+						dp=ld.get(i);
+						dp.addStaff(staff);
+						i=ld.size()+1;
+						}
+				}
+				if(i==ld.size())
+					throw new InexistentDepartmentException();
+			}
+			input.close();
+		}catch(IOException e) {
+			 System.out.println(String.format("File %s does not exist", path));
+		}	
+	}
+
+	
+read fulltime teacher information and throw the exception:
+		
+	public static void readFullTimeTeachersFile(String path) throws TwoInfoTheSameException,InexistentDepartmentException {
+		File file = new File(path);
+		try (Scanner input = new Scanner(file)) {
+			while (input.hasNext()) {
+				String row = input.nextLine();
+				String[] data = row.split(",");
+				Integer employeeID = Integer.parseInt(data[0]);
+				String name = data[1];
+				String address = data[2];
+				String phoneNum = data[3];
+				char gender = data[4].charAt(0);
+				Integer departmentID = -1;
+				try {
+					departmentID = Integer.parseInt(data[5]);
+				} catch (java.lang.NumberFormatException e) {
+				}
+
+				String department = data[6];
+				String specialty = data[7];
+				String degree = data[8];
+				String course = data[9];
+				String hireDate = data[10];
+				Double yearsOfTeaching = Double.parseDouble(data[11]);
+				String partTimeOrFullTime = data[12];
+				boolean dean = data[13].equalsIgnoreCase("TRUE");
+				FullTimeTeacher fullTimeTeacher = new FullTimeTeacher(employeeID, name, address, phoneNum, gender,
+						departmentID, department, specialty, degree, course, hireDate, yearsOfTeaching,
+						partTimeOrFullTime, dean);
+				List<Department> ld = getAllDep();
+				Department dp;
+				int i;
+				for (i = 0; i < ld.size(); i++) {
+					if (departmentID == ld.get(i).getDepartmentID()) {
+						dp = ld.get(i);
+						dp.addFullTimeTeacher(fullTimeTeacher);
+						i = ld.size() + 1;
+					}
+				}
+				if (i == ld.size())
+					throw new InexistentDepartmentException();
+			}
+			input.close();
+		} catch (IOException e) {
+			System.out.println(String.format("File %s does not exist", path));
+		}
+	}
+	
+
+read parttime information and throw the exception:
+
+	public static void readPartTimeTeachersFile(String path)throws TwoInfoTheSameException,InexistentDepartmentException  {
+		File file = new File(path);
+		try (Scanner input = new Scanner(file)) {
+			while (input.hasNext()) {
+				String row = input.nextLine();
+				String[] data = row.split(",");
+				Integer employeeID = Integer.parseInt(data[0]);
+				String name = data[1];
+				String address = data[2];
+				String phoneNum = data[3];
+				char gender = data[4].charAt(0);
+				Integer departmentID = -1;
+				try {
+					departmentID = Integer.parseInt(data[5]);
+					final int depID2 = departmentID;
+					if (getAllDep().stream().filter((d) -> d.departmentID == depID2).count() < 1)
+						throw new InexistentDepartmentException();
+				} catch (java.lang.NumberFormatException e) {
+				}
+				String department = data[6];
+				String specialty = data[7];
+				String degree = data[8];
+				String course = data[9];
+				String hireDate = data[10];
+				Double yearsOfTeaching = Double.parseDouble(data[11]);
+				String partTimeOrFullTime = data[12];
+				boolean dean = data[13].equalsIgnoreCase("TRUE");
+				Double workingHour = Double.parseDouble(data[14]);
+
+				PartTimeTeacher partTimeTeacher = new PartTimeTeacher(employeeID, name, address, phoneNum, gender,
+						departmentID, department, specialty, degree, course, hireDate, yearsOfTeaching,
+						partTimeOrFullTime, dean, workingHour);
+				List<Department> ld = getAllDep();
+				Department dp;
+				int i;
+				for (i = 0; i < ld.size(); i++) {
+					if (departmentID == ld.get(i).getDepartmentID()) {
+						dp = ld.get(i);
+						dp.addPartTimeTeacher(partTimeTeacher);
+						i = ld.size() + 1;
+					}
+				}
+				if (i == ld.size())
+					throw new InexistentDepartmentException();
+			}
+			input.close();
+		} catch (IOException e) {
+			System.out.println(String.format("File %s does not exist", path));
+		}
+	}
